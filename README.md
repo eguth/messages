@@ -1,4 +1,4 @@
-messages
+Messages
 ========
 
-A "wall" for Zendesk agents
+`rackup`
