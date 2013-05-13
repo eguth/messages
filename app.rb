@@ -1,39 +1,99 @@
 require "rubygems"
+require "bundler/setup"
 require "sinatra/base"
 require "rack/ssl"
+require "rack/csrf"
+require "cgi"
 
 require_relative "orm"
 require_relative "helpers"
 
+### TODO
+# * Handle errors better
+
 class App < Sinatra::Base
-  set    :ssl, lambda { !development? }
+  set    :ssl, lambda { false }
+  set    :max_messages, 25
+  set    :protection, :except => :frame_options
+  set    :redirect_uri, "https://zendesk-wall.herokuapp.com/oauth/authorize"
+
   enable :sessions
+  enable :logging
 
   helpers Helpers
 
-  use Rack::SSL, :exclude => Proc.new { !ssl? }
-  use Rack::Session::Cookie, :expire_after => 60*60*24, :secret => (ENV["MESSAGES_SESSION_SECRET"] || "#{rand}")
+  use Rack::SSL, :exclude => proc { !ssl? }
+  use Rack::Session::Cookie, :expire_after => 60*60*24, :secret => (ENV["MESSAGES_SESSION_SECRET"] || rand.to_s)
 
-  before do
-    if !session[:id]
-      # OAuth against Zendesk
+  get "/" do
+    erb :index
+  end
+
+  get "/:subdomain" do
+    erb :messages
+  end
+
+  post "/:subdomain/message" do
+    return 401 unless logged_in?
+
+    message = Message.create(
+      :body => params[:body],
+      :account => account,
+      :person_id => session[:user_id]
+    )
+
+    partial = if message.saved?
+      erb(:_message, :locals => { :message => message }, :layout => false)
+    else
+      @error = "Could not create message."
+      logger.error("Message error: #{message.errors.inspect}")
+
+      alert
+    end
+
+    if request.xhr?
+      env["faye.client"].publish(current_channel, partial)
+
+      200
+    else
+      redirect "/"
     end
   end
 
-  get "/" do
-    @info = "Wooo"
-    erb :message
+  get "/:subdomain/login" do
+    if logged_in?
+      redirect "/#{params[:subdomain]}"
+    else
+      redirect client.auth_code.authorize_url(:redirect_uri => settings.redirect_uri,
+        :scope => "read", :state => [params[:subdomain], CGI.escape(Rack::Csrf.csrf_token(env))].join("|"))
+    end
   end
 
-  get "/since" do
-    erb "Rendering messages since the since parameter"
-  end
+  get "/:subdomain/logout" do
+    session[:user_id] = nil
 
-  get "/logout" do
-    session.clear
     @info = "Logged out"
+
+    erb ""
+  end
+
+  get "/oauth/authorize" do
+    params[:subdomain], csrf = params.fetch("state", "").split("|")
+
+    if params[:error] || csrf != Rack::Csrf.crsf_token(env)
+      [400, {}, params[:error] || "Invalid CSRF"]
+    elsif !account
+      [400, {}, "Could not find account"]
+    else
+      begin
+        token = client.auth_code.get_token(params[:code], :redirect_uri => settings.redirect_uri).token
+        create_or_update_person_from_token!(token)
+      rescue OAuth2::Error => e
+        logger.error("OAuth 2 error: #{e.message}, #{e.code}")
+        logger.error("OAuth 2 error: #{e.response.inspect}")
+      end
+
+      redirect "/#{params[:subdomain]}"
+    end
   end
 end
-
-App.run
-

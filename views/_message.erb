@@ -1,0 +1,10 @@
+<div class="row" style="margin-bottom: 5px">
+  <div class="span1">
+    <img src="<%= message.person.gravatar %>" style="width: 48px; height: 48px;" />
+  </div>
+  <div class="span11">
+    <strong><%= message.person.name %> <%= message.created_at.strftime("at %r on %D") %></strong>
+    <br />
+    <%= message.body %>
+  </div>
+</div>

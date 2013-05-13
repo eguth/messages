@@ -1,3 +1,6 @@
+require "oauth2"
+require "zendesk_api"
+
 module Helpers
   def alert
     if @alert
@@ -15,5 +18,69 @@ module Helpers
     "<div class=\"#{type}\">"+
     "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>"+
     "#{message}</div>"
+  end
+
+  def client
+    @client ||= OAuth2::Client.new('messages', client_secret, :site => "https://#{account.subdomain}.zendesk.com",
+      :token_url => "/oauth/tokens", :authorize_url => "/oauth/authorizations/new")
+  end
+
+  def client_secret
+    ENV["CLIENT_SECRET"]
+  end
+
+  def api_client(token)
+    ZendeskAPI::Client.new do |config|
+      config.url = "https://#{account.subdomain}.zendesk.com/api/v2"
+      config.access_token = token
+      config.logger = logger
+    end
+  end
+
+  def create_or_update_person_from_token!(token)
+    user = api_client(token).current_user
+
+    if user.id
+      create_or_update_person!(:name => user.name,
+        :email => user.email, :user_id => user.id)
+    end
+  end
+
+  def create_or_update_person!(attrs = {})
+    person = nil
+
+    if attrs[:user_id]
+      person = Person.first(:user_id => attrs[:user_id])
+    end
+
+    person ||= Person.new
+
+    person.attributes = attrs
+    person.account = account
+    person.save
+
+    session[:user_id] = person.id
+  end
+
+  def person
+    @person ||= account.people.get(session[:user_id])
+  end
+
+  def logged_in?
+    !!(account && person)
+  end
+
+  def messages
+    @messages ||= account.messages.all(:limit => settings.max_messages, :order => [:created_at.desc])
+  end
+
+  def account
+    @account ||= if params[:subdomain]
+      Account.first_or_create(:subdomain => params[:subdomain])
+    end
+  end
+
+  def current_channel
+    "/messages/#{account.subdomain}"
   end
 end

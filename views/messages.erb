@@ -1,0 +1,14 @@
+<script type="text/javascript">
+  var Settings = {
+    current_channel: '<%= current_channel %>',
+    max_messages: <%= settings.max_messages - 1 %>,
+  };
+</script>
+
+<% if logged_in? %>
+<div id="messages">
+  <% messages.each do |message| %>
+    <%= erb :_message, :locals => { :message => message } %>
+  <% end %>
+</div>
+<% end %>
