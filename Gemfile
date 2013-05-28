@@ -16,3 +16,9 @@ gem "data_mapper"
 gem "dm-postgres-adapter", :group => :production
 gem "dm-sqlite-adapter", :group => :development
 gem "dm-timestamps"
+
+group :test do
+  gem "database_cleaner"
+  gem "rack-test"
+  gem "mocha"
+end

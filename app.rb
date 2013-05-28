@@ -56,7 +56,7 @@ class App < Sinatra::Base
 
       200
     else
-      redirect "/"
+      redirect "/#{params[:subdomain]}"
     end
   end
 
@@ -80,10 +80,8 @@ class App < Sinatra::Base
   get "/oauth/authorize" do
     params[:subdomain], csrf = params.fetch("state", "").split("|")
 
-    if params[:error] || CGI.unescape(csrf) != Rack::Csrf.csrf_token(env)
+    if params[:error] || !csrf || CGI.unescape(csrf) != Rack::Csrf.csrf_token(env)
       [400, {}, params[:error] || "Invalid CSRF"]
-    elsif !account
-      [400, {}, "Could not find account"]
     else
       begin
         token = client.auth_code.get_token(params[:code], :redirect_uri => settings.redirect_uri).token
