@@ -80,7 +80,7 @@ class App < Sinatra::Base
   get "/oauth/authorize" do
     params[:subdomain], csrf = params.fetch("state", "").split("|")
 
-    if params[:error] || csrf != Rack::Csrf.csrf_token(env)
+    if params[:error] || CGI.unescape(csrf) != Rack::Csrf.csrf_token(env)
       [400, {}, params[:error] || "Invalid CSRF"]
     elsif !account
       [400, {}, "Could not find account"]
