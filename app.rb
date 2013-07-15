@@ -15,7 +15,16 @@ class App < Sinatra::Base
   set    :ssl, lambda { false }
   set    :max_messages, 25
   set    :protection, :except => :frame_options
-  set    :redirect_uri, "https://zendesk-wall.herokuapp.com/oauth/authorize"
+
+  configure :development do
+    set :redirect_uri, "http://0.0.0.0:9292/oauth/authorize"
+    set :zendesk_uri, "http://%{subdomain}.localhost:3001"
+  end
+
+  configure :production do
+    set :redirect_uri, "https://zendesk-wall.herokuapp.com/oauth/authorize"
+    set :zendesk_uri, "https://%{subdomain}.zendesk.com"
+  end
 
   enable :sessions
   enable :logging

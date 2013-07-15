@@ -21,7 +21,7 @@ module Helpers
   end
 
   def client
-    @client ||= OAuth2::Client.new('messages', client_secret, :site => "https://#{account.subdomain}.zendesk.com",
+    @client ||= OAuth2::Client.new('messages', client_secret, :site => settings.zendesk_uri % { :subdomain => account.subdomain },
       :token_url => "/oauth/tokens", :authorize_url => "/oauth/authorizations/new")
   end
 
@@ -31,7 +31,8 @@ module Helpers
 
   def api_client(token)
     ZendeskAPI::Client.new do |config|
-      config.url = "https://#{account.subdomain}.zendesk.com/api/v2"
+      config.url = (settings.zendesk_uri % { :subdomain => account.subdomain }) + "/api/v2"
+      config.allow_http = settings.development?
       config.access_token = token
       config.logger = logger
     end
