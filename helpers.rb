@@ -39,11 +39,19 @@ module Helpers
   end
 
   def create_or_update_person_from_token!(token)
-    user = api_client(token).current_user
+    api = api_client(token)
+    user = api.current_user
 
     if user.id
       create_or_update_person!(:name => user.name,
         :email => user.email, :user_id => user.id)
+
+      api.oauth_tokens.all! do |t|
+        if token.start_with?(t.token)
+          t.destroy!
+          break
+        end
+      end
     end
   end
 

@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/zendesk/zendesk_api_client_rb
-  revision: d9ef651c850a97659b111731042e402eedec0f64
+  revision: dac8fc8cbea2272ddfe0323b02570d00d73a7611
   specs:
-    zendesk_api (0.3.5)
+    zendesk_api (0.4.0.rc3)
       faraday (>= 0.8.0)
       faraday_middleware (>= 0.8.7)
       hashie (>= 1.2)
@@ -111,7 +111,7 @@ GEM
     mime-types (1.23)
     mocha (0.13.3)
       metaclass (~> 0.0.1)
-    multi_json (1.7.3)
+    multi_json (1.7.7)
     multi_xml (0.5.3)
     multipart-post (1.2.0)
     oauth2 (0.9.1)

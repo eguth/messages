@@ -74,7 +74,7 @@ class App < Sinatra::Base
       redirect "/#{params[:subdomain]}"
     else
       redirect client.auth_code.authorize_url(:redirect_uri => settings.redirect_uri,
-        :scope => "read", :state => [params[:subdomain], CGI.escape(Rack::Csrf.csrf_token(env))].join("|"))
+        :scope => "read write", :state => [params[:subdomain], CGI.escape(Rack::Csrf.csrf_token(env))].join("|"))
     end
   end
 
@@ -97,7 +97,7 @@ class App < Sinatra::Base
         create_or_update_person_from_token!(token)
       rescue OAuth2::Error => e
         logger.error("OAuth 2 error: #{e.message}, #{e.code}")
-        logger.error("OAuth 2 error: #{e.response.inspect}")
+        logger.error("OAuth 2 error: #{e.response}")
       end
 
       redirect "/#{params[:subdomain]}"
