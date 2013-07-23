@@ -9,13 +9,13 @@ $(document).ready(function() {
   var replying = $("#message #replying");
   var preview_close = $("#preview-area .close");
 
-  $(".toggle-children").on('click', function(event) {
+  $("body").on('click', '.toggle-children', function(event) {
     event.preventDefault();
 
     $(this).parents(".message").find(".children").toggle();
   });
 
-  $(".reply-to").on('click', function(event) {
+  $("body").on('click', '.reply-to', function(event) {
     event.preventDefault();
 
     parent_id.val($(this).data("id"));
@@ -25,7 +25,7 @@ $(document).ready(function() {
     window.scrollTo(0, 0);
   });
 
-  replying.children(".close").on('click', function(event) {
+  replying.children(".close").click(function(event) {
     event.preventDefault();
 
     parent_id.val("");
@@ -74,7 +74,7 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
-  $(".like").on('click', function(event) {
+  $("body").on('click', '.like', function(event) {
     var element = $(this);
 
     $.ajax(element.data("action"), {
