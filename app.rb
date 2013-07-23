@@ -10,12 +10,9 @@ require "json"
 require_relative "orm"
 require_relative "helpers"
 
-### TODO
-# * Handle errors better
-
 class App < Sinatra::Base
   set    :ssl, lambda { false }
-  set    :max_messages, 5
+  set    :max_messages, 10
   set    :protection, except: :frame_options
 
   configure :development do
