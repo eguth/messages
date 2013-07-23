@@ -1,14 +1,16 @@
-<div class="row">
-  <div class="span12 pagination-centered">
-    <img src="/spinner.gif" class="hide" id="spinner" style="width: 48px; height: 48px" />
+<form action="<%= url("/#{params[:subdomain]}/message") %>" id="message" method="post">
+  <textarea rows="8" placeholder="Enter your message..." name="body" class="input-block-level"></textarea>
+  <input type="hidden" name="parent_id" id="parent-id" />
+  <div id="preview-area" class="hide">
+    <button type="button" class="close">&times;</button>
+    <div></div>
   </div>
 
-  <% if logged_in? %>
-    <div class="span12">
-      <form action="<%= url("/#{params[:subdomain]}/message") %>" id="message" method="post">
-        <textarea rows="4" placeholder="Enter your message..." name="body" class="input-block-level"></textarea>
-        <button type="submit" class="btn">Submit</button>
-      </form>
-    </div>
-  <% end %>
-</div>
+  <div id="replying" class="hide alert">
+    <button type="button" class="close">&times;</button>
+    <span></span>
+  </div>
+
+  <button type="submit" class="btn">Submit</button>
+  <button class="btn btn-inverse" id="preview" data-action="<%= url("/#{params[:subdomain]}/preview") %>">Preview</button>
+</form>

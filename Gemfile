@@ -3,6 +3,8 @@ source "https://rubygems.org"
 gem "sinatra"
 gem "puma"
 gem "json"
+gem "redcarpet"
+gem "nokogiri"
 
 gem "rack-ssl"
 gem "rack_csrf"

@@ -1,23 +1,27 @@
 require "oauth2"
 require "zendesk_api"
+require "nokogiri"
 
 module Helpers
   def alert
-    if @alert
-      alert_for_type("alert", @alert)
-    elsif @success
-      alert_for_type("alert alert-success", @success)
-    elsif @error
-      alert_for_type("alert alert-error", @error)
-    elsif @info
-      alert_for_type("alert alert-info", @info)
+    if session[:alert]
+      alert_for_type("alert", session.delete(:alert))
+    elsif session[:success]
+      alert_for_type("alert alert-success", session.delete(:success))
+    elsif session[:error]
+      alert_for_type("alert alert-error", session.delete(:error))
+    elsif session[:info]
+      alert_for_type("alert alert-info", session.delete(:info))
     end
   end
 
   def alert_for_type(type, message)
-    "<div class=\"#{type}\">"+
-    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>"+
-    "#{message}</div>"
+    <<-EOF
+    <div class="#{type}">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      #{message}
+    </div>
+    EOF
   end
 
   def client
@@ -76,7 +80,7 @@ module Helpers
   end
 
   def messages
-    @messages ||= account.messages.all(:limit => settings.max_messages, :order => [:created_at.desc])
+    @messages ||= account.messages.all(:limit => settings.max_messages, :order => [:created_at.desc], :parent_id => nil)
   end
 
   def account
@@ -85,7 +89,37 @@ module Helpers
     end
   end
 
+  def markdown
+    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+      :no_intra_emphasis => true,
+      :disable_indented_code_blocks => true,
+      :fenced_code_blocks => true,
+      :strikethrough => true,
+      :highlight => true,
+      :space_after_headers => true)
+  end
+
   def current_channel
     "/messages/#{account.subdomain}"
+  end
+
+  def strip_and_truncate(body)
+    Nokogiri::HTML(body).xpath("//text()").remove.to_s[0..10]
+  end
+
+  def markdown_examples
+    [
+      "*italic*",
+      "**bold**",
+      "An [example link](http://www.google.com)",
+      "![alt text](http://support.zendesk.com/favicon.ico \"Title\")",
+      "Header 1\n======",
+      "Header 2\n--------",
+      "1. Item\n2. Another Item",
+      "* Bullet\n* Another Bullet",
+      "> Nested\n> quote",
+      "Hello  \nNew line",
+      "This is ~~terrible~~ awesome!"
+    ]
   end
 end

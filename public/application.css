@@ -1,0 +1,109 @@
+body {
+  background-color: #78a300;
+}
+
+.message {
+  border-style: solid;
+  border-width: 3px;
+  border-color: black;
+  padding: 5px;
+
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+
+  // background-color: #8aaf19;
+  background-color: #F0F0F0;
+
+  margin-bottom: 5px;
+}
+
+.message-child {
+  border-left-style: solid;
+  border-width: 1px;
+  border-color: black;
+
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
+
+.children {
+  margin-top: 10px;
+}
+
+textarea {
+  background-color: #F0F0F0;
+}
+
+.author-info {
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.author-info .author {
+  line-height: 30px;
+  margin: auto 0 auto 0;
+}
+
+.author-info .actions {
+  float: right;
+}
+
+#markdown-reference {
+  background-color: #F0F0F0;
+
+  border-style: solid;
+  border-width: 3px;
+  border-color: black;
+  padding: 5px;
+
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+#markdown-reference div.content > div > :first-child {
+  margin: 0;
+  float: right;
+}
+
+#markdown-reference div.content > div {
+  padding: 5px;
+  border-bottom-style: dotted;
+  border-width: 1px;
+}
+
+#markdown-reference div.content > div:last-child {
+  border-bottom-style: none;
+}
+
+#markdown-reference h4 {
+  margin: 0;
+  line-height: 30px;
+}
+
+#markdown-reference p {
+  margin: 0;
+}
+
+.toggle {
+  float: right;
+}
+
+#preview-area {
+  background-color: #F0F0F0;
+  padding: 5px;
+
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+
+  margin-bottom: 10px;
+}
+
+#replying {
+  float: right;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: 0;
+}

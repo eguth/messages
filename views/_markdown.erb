@@ -1,0 +1,27 @@
+<div id="markdown-reference">
+  <button class="btn toggle" data-toggle="#markdown-reference .content">
+    <i class="icon-plus"></i>
+    <i class="icon-minus" style="display: none;"></i>
+  </button>
+
+  <h4 class="pagination-centered">Markdown Reference</h4>
+
+  <div class="content hide">
+    <% markdown_examples.each do |example| %>
+      <div>
+        <%= markdown.render(example) %>
+        <p><%= example.gsub(/( )+$/, "[space]" * '\1'.length).gsub(/>/, "&gt;").gsub(/(\n)+/, "<br />") %></p>
+      </div>
+    <% end %>
+
+    <div>
+      <div><%= markdown.render("Hello\n\nNew Paragraph") %></div>
+      <p>Hello<br /><br />New Paragraph</p>
+    </div>
+
+    <div style="height: 100px">
+      <div><%= markdown.render("Hello\n* * *\nNew Paragraph") %></div>
+      <p>Hello<br />* * *<br />New Paragraph</p>
+    </div>
+  </div>
+</div>

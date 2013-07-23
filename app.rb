@@ -4,6 +4,7 @@ require "sinatra/base"
 require "rack/ssl"
 require "rack/csrf"
 require "cgi"
+require "redcarpet"
 
 require_relative "orm"
 require_relative "helpers"
@@ -39,34 +40,48 @@ class App < Sinatra::Base
   end
 
   get "/:subdomain" do
-    erb :messages
+    if logged_in?
+      erb :messages
+    else
+      erb :login
+    end
   end
 
   post "/:subdomain/message" do
     return 401 unless logged_in?
 
+    parent = params[:parent_id].to_i
+
     message = Message.create(
-      :body => params[:body],
+      :body => markdown.render(params[:body]),
       :account => account,
-      :person_id => session[:user_id]
+      :person_id => session[:user_id],
+      :parent_id => parent > 0 ? parent : nil
     )
 
-    partial = if message.saved?
-      erb(:_message, :locals => { :message => message }, :layout => false)
-    else
-      @error = "Could not create message."
-      logger.error("Message error: #{message.errors.inspect}")
+    if message.saved?
+      partial = if message.parent
+        erb(:_child, :locals => { :message => message }, :layout => false)
+      else
+        erb(:_message, :locals => { :message => message }, :layout => false)
+      end
 
-      alert
-    end
-
-    if request.xhr?
-      env["faye.client"].publish(current_channel, partial)
+      env["faye.client"].publish(current_channel, JSON.dump(:body => partial, :parent_id => message.parent_id))
 
       200
     else
-      redirect "/#{params[:subdomain]}"
+      status 422
+
+      errors = message.errors.full_messages.join("<br />")
+      body "Could not create message: #{errors}"
     end
+  end
+
+  post "/:subdomain/preview" do
+    return 401 unless logged_in?
+
+    status 200
+    body markdown.render(params[:body])
   end
 
   get "/:subdomain/login" do
@@ -80,10 +95,9 @@ class App < Sinatra::Base
 
   get "/:subdomain/logout" do
     session[:user_id] = nil
+    session[:info] = "Logged out"
 
-    @info = "Logged out"
-
-    erb ""
+    redirect "/#{params[:subdomain]}"
   end
 
   get "/oauth/authorize" do
@@ -95,7 +109,9 @@ class App < Sinatra::Base
       begin
         token = client.auth_code.get_token(params[:code], :redirect_uri => settings.redirect_uri).token
         create_or_update_person_from_token!(token)
+        session[:success] = "Welcome #{person.name}!"
       rescue OAuth2::Error => e
+        session[:error] = "An error occurred when trying to authenticate using OAuth. Try again or please contact sdavidovitz@zendesk.com."
         logger.error("OAuth 2 error: #{e.message}, #{e.code}")
         logger.error("OAuth 2 error: #{e.response}")
       end

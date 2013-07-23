@@ -1,0 +1,19 @@
+<div class="author-info">
+<% unless message.parent %>
+  <div class="actions">
+    <button class="btn reply-to" data-trunc="<%= strip_and_truncate(message.body) %>...">
+      <i class="icon-envelope" ></i>
+    </button>
+
+    <button class="btn toggle-children" data-id="<%= message.id %>">
+      <i class="icon-list" ></i>
+      <span><%= message.children.size %></span>
+    </button>
+  </div>
+<% end %>
+
+  <span class="<% "author" unless message.parent %>">
+    <strong><%= message.person.name %></strong>
+    <%= message.created_at.strftime("at %r on %D") %>
+  </span>
+</div>

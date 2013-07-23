@@ -41,12 +41,16 @@ class Message
   include DataMapper::Resource
 
   property :id, Serial
-  property :body, Text
+  property :body, Text, required: true
   property :created_at, DateTime
   property :updated_at, DateTime
+  property :parent_id, Integer
 
   belongs_to :person
   belongs_to :account
+  belongs_to :parent, self
+
+  has n, :children, self, :child_key => [:parent_id]
 end
 
 DataMapper.auto_upgrade!

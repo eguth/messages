@@ -1,14 +1,23 @@
 <script type="text/javascript">
   var Settings = {
     current_channel: '<%= current_channel %>',
-    max_messages: <%= settings.max_messages - 1 %>,
+    max_messages: <%= settings.max_messages - 1 %>
   };
 </script>
 
-<% if logged_in? %>
-<div id="messages">
-  <% messages.each do |message| %>
-    <%= erb :_message, :locals => { :message => message } %>
-  <% end %>
+<!-- div id="logout">
+  <a href="<%= url("/#{params[:subdomain]}/logout") %>">Logout</a>
+</div -->
+
+<div class="span4" id="sidebar">
+  <%= erb :_form %>
+  <%= erb :_markdown %>
 </div>
-<% end %>
+
+<div class="span7">
+  <div id="messages">
+    <% messages.each do |message| %>
+      <%= erb :_message, :locals => { :message => message } %>
+    <% end %>
+  </div>
+</div>
