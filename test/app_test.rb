@@ -127,6 +127,11 @@ describe "Messages" do
         get "/support/logout", {}, "rack.session" => { "user_id" => 1 }
       end
 
+      it "should redirect" do
+        assert last_response.redirect?
+        assert_match %r{/support$}, last_response.headers["Location"]
+      end
+
       it "should remove user_id" do
         assert_nil last_request.env["rack.session"]["user_id"]
       end
@@ -137,8 +142,9 @@ describe "Messages" do
         get "/support/logout"
       end
 
-      it "should respond ok" do
-        assert last_response.ok?
+      it "should redirect" do
+        assert last_response.redirect?
+        assert_match %r{/support$}, last_response.headers["Location"]
       end
     end
   end
@@ -156,7 +162,7 @@ describe "Messages" do
       end
 
       it "should create a message" do
-        assert_equal "hi", user.messages.last.body
+        assert_equal "<p>hi</p>\n", user.messages.last.body
       end
 
       it "should be ok" do
