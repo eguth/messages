@@ -5,6 +5,7 @@ require "rack/ssl"
 require "rack/csrf"
 require "cgi"
 require "redcarpet"
+require "json"
 
 require_relative "orm"
 require_relative "helpers"
@@ -22,7 +23,7 @@ class App < Sinatra::Base
     set :zendesk_uri, "http://%{subdomain}.localhost:3001"
   end
 
-  configure :production do
+  configure :test, :production do
     set :redirect_uri, "https://zendesk-wall.herokuapp.com/oauth/authorize"
     set :zendesk_uri, "https://%{subdomain}.zendesk.com"
   end
