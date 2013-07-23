@@ -116,7 +116,7 @@ module Helpers
       "*italic*",
       "**bold**",
       "An [example link](http://www.google.com)",
-      "![alt text](http://support.zendesk.com/favicon.ico \"Title\")",
+      "![alt text](https://support.zendesk.com/favicon.ico \"Title\")",
       "Header 1\n======",
       "Header 2\n--------",
       "1. Item\n2. Another Item",
