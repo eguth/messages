@@ -45,12 +45,13 @@ class Message
   property :created_at, DateTime
   property :updated_at, DateTime
   property :parent_id, Integer
+  property :likes, Integer, default: 0
 
   belongs_to :person
   belongs_to :account
   belongs_to :parent, self
 
-  has n, :children, self, :child_key => [:parent_id]
+  has n, :children, self, child_key: [:parent_id]
 end
 
 DataMapper.auto_upgrade!
