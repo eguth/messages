@@ -177,12 +177,11 @@ describe "Messages" do
       end
 
       it "should create a message" do
-        assert_equal "hi", user.messages.last.body
+        assert_equal "<p>hi</p>\n", user.messages.last.body
       end
 
-      it "should redirect" do
-        assert last_response.redirect?
-        assert_match %r{/support$}, last_response.headers["Location"]
+      it "should be ok" do
+        assert last_response.ok?
       end
     end
 

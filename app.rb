@@ -67,9 +67,16 @@ class App < Sinatra::Base
         erb(:_message, :locals => { :message => message }, :layout => false)
       end
 
-      env["faye.client"].publish(current_channel, JSON.dump(:body => partial, :parent_id => message.parent_id))
 
-      200
+      response = JSON.dump(:body => partial, :parent_id => message.parent_id)
+
+      if env["faye.client"]
+        env["faye.client"].publish(current_channel, response)
+      else
+        body response
+      end
+
+      status 200
     else
       status 422
 
