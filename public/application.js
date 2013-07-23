@@ -29,10 +29,12 @@ $(document).ready(function() {
         replying.children(".close").click();
 
         children.show();
+        parent_message.effect("highlight", { color: "#8aaf19" });
       } else {
-        messages.prepend(message.body);
+        messages.prepend(message.body)
 
         var children = messages.children(".message");
+        children.first().effect("highlight", { color: "#8aaf19" });
 
         if(children.length > Settings.max_messages) {
           children.last().remove();
@@ -101,6 +103,19 @@ $(document).ready(function() {
     }).always(function() {
       preview_close.click();
       replying.children(".close").click();
+    });
+
+    event.preventDefault();
+  });
+
+  $(".like").on('click', function(event) {
+    var element = $(this);
+
+    $.ajax(element.data("action"), {
+      method: "PUT"
+    }).done(function(data, textStatus, xhr) {
+      element.children("span").html(data);
+      element.attr("disabled", "disabled");
     });
 
     event.preventDefault();

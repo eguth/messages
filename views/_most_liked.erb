@@ -1,0 +1,18 @@
+<div id="most-liked" class="info-box">
+  <button class="btn toggle" data-toggle="#most-liked .content">
+    <i class="icon-plus"></i>
+    <i class="icon-minus" style="display: none;"></i>
+  </button>
+
+  <h4 class="pagination-centered">Most Liked Messages</h4>
+
+  <div class="content hide">
+    <% most_liked.each do |message| %>
+      <div class="most-liked-message">
+        <%= message.body %>
+        <p class="most-liked-author"><strong><%= message.person.name %></strong></p>
+      </div>
+    <% end %>
+  </div>
+</div>
+

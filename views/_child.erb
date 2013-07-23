@@ -3,7 +3,7 @@
     <img src="<%= message.person.gravatar %>" style="width: 48px; height: 48px;" />
   </div>
 
-  <div class="span8">
+  <div class="span11">
     <%= message.body %>
 
     <%= erb :_author, :locals => { :message => message }, :layout => false %>

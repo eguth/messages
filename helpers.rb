@@ -25,8 +25,8 @@ module Helpers
   end
 
   def client
-    @client ||= OAuth2::Client.new('messages', client_secret, :site => settings.zendesk_uri % { :subdomain => account.subdomain },
-      :token_url => "/oauth/tokens", :authorize_url => "/oauth/authorizations/new")
+    @client ||= OAuth2::Client.new('messages', client_secret, site: settings.zendesk_uri % { subdomain: account.subdomain },
+      token_url: "/oauth/tokens", authorize_url: "/oauth/authorizations/new")
   end
 
   def client_secret
@@ -35,7 +35,7 @@ module Helpers
 
   def api_client(token)
     ZendeskAPI::Client.new do |config|
-      config.url = (settings.zendesk_uri % { :subdomain => account.subdomain }) + "/api/v2"
+      config.url = (settings.zendesk_uri % { subdomain: account.subdomain }) + "/api/v2"
       config.allow_http = settings.development?
       config.access_token = token
       config.logger = logger
@@ -47,10 +47,10 @@ module Helpers
     user = api.current_user
 
     if user.id
-      create_or_update_person!(:name => user.name,
-        :email => user.email, :user_id => user.id)
+      create_or_update_person!(name: user.name,
+        email: user.email, user_id: user.id)
 
-      current_token = api.oauth_tokens.find!(:id => "current")
+      current_token = api.oauth_tokens.find!(id: "current")
       current_token.destroy!
     end
   end
@@ -59,7 +59,7 @@ module Helpers
     person = nil
 
     if attrs[:user_id]
-      person = Person.first(:user_id => attrs[:user_id])
+      person = Person.first(user_id: attrs[:user_id])
     end
 
     person ||= Person.new
@@ -80,23 +80,27 @@ module Helpers
   end
 
   def messages
-    @messages ||= account.messages.all(:limit => settings.max_messages, :order => [:created_at.desc], :parent_id => nil)
+    @messages ||= account.messages.all(limit: settings.max_messages, order: [:created_at.desc], parent_id: nil)
+  end
+
+  def most_liked
+    @most_liked ||= account.messages.all(limit: 5, order: [:likes.desc])
   end
 
   def account
     @account ||= if params[:subdomain]
-      Account.first_or_create(:subdomain => params[:subdomain])
+      Account.first_or_create(subdomain: params[:subdomain])
     end
   end
 
   def markdown
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
-      :no_intra_emphasis => true,
-      :disable_indented_code_blocks => true,
-      :fenced_code_blocks => true,
-      :strikethrough => true,
-      :highlight => true,
-      :space_after_headers => true)
+      no_intra_emphasis: true,
+      disable_indented_code_blocks: true,
+      fenced_code_blocks: true,
+      strikethrough: true,
+      highlight: true,
+      space_after_headers: true)
   end
 
   def current_channel

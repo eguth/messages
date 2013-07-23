@@ -15,8 +15,8 @@ require_relative "helpers"
 
 class App < Sinatra::Base
   set    :ssl, lambda { false }
-  set    :max_messages, 25
-  set    :protection, :except => :frame_options
+  set    :max_messages, 5
+  set    :protection, except: :frame_options
 
   configure :development do
     set :redirect_uri, "http://0.0.0.0:9292/oauth/authorize"
@@ -33,8 +33,8 @@ class App < Sinatra::Base
 
   helpers Helpers
 
-  use Rack::SSL, :exclude => proc { !ssl? }
-  use Rack::Session::Cookie, :expire_after => 60*60*24, :secret => (ENV["MESSAGES_SESSION_SECRET"] || rand.to_s)
+  use Rack::SSL, exclude: proc { !ssl? }
+  use Rack::Session::Cookie, expire_after: 60*60*24, secret: (ENV["MESSAGES_SESSION_SECRET"] || rand.to_s)
 
   get "/" do
     erb :index
@@ -54,21 +54,21 @@ class App < Sinatra::Base
     parent = params[:parent_id].to_i
 
     message = Message.create(
-      :body => markdown.render(params[:body]),
-      :account => account,
-      :person_id => session[:user_id],
-      :parent_id => parent > 0 ? parent : nil
+      body: markdown.render(params[:body]),
+      account: account,
+      person_id: session[:user_id],
+      parent_id: parent > 0 ? parent : nil
     )
 
     if message.saved?
       partial = if message.parent
-        erb(:_child, :locals => { :message => message }, :layout => false)
+        erb(:_child, locals: { message: message }, layout: false)
       else
-        erb(:_message, :locals => { :message => message }, :layout => false)
+        erb(:_message, locals: { message: message }, layout: false)
       end
 
 
-      response = JSON.dump(:body => partial, :parent_id => message.parent_id)
+      response = JSON.dump(body: partial, parent_id: message.parent_id)
 
       if env["faye.client"]
         env["faye.client"].publish(current_channel, response)
@@ -85,6 +85,20 @@ class App < Sinatra::Base
     end
   end
 
+  put "/:subdomain/:id" do
+    message = account.messages.get(params[:id].to_i)
+
+    if message
+      message.adjust!(likes: 1)
+      message.reload
+
+      status 200
+      body message.likes.to_s
+    else
+      404
+    end
+  end
+
   post "/:subdomain/preview" do
     return 401 unless logged_in?
 
@@ -96,8 +110,8 @@ class App < Sinatra::Base
     if logged_in?
       redirect "/#{params[:subdomain]}"
     else
-      redirect client.auth_code.authorize_url(:redirect_uri => settings.redirect_uri,
-        :scope => "read write", :state => [params[:subdomain], CGI.escape(Rack::Csrf.csrf_token(env))].join("|"))
+      redirect client.auth_code.authorize_url(redirect_uri: settings.redirect_uri,
+        scope: "read write", state: [params[:subdomain], CGI.escape(Rack::Csrf.csrf_token(env))].join("|"))
     end
   end
 
@@ -115,7 +129,7 @@ class App < Sinatra::Base
       [400, {}, params[:error] || "Invalid CSRF"]
     else
       begin
-        token = client.auth_code.get_token(params[:code], :redirect_uri => settings.redirect_uri).token
+        token = client.auth_code.get_token(params[:code], redirect_uri: settings.redirect_uri).token
         create_or_update_person_from_token!(token)
         session[:success] = "Welcome #{person.name}!"
       rescue OAuth2::Error => e

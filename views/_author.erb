@@ -1,18 +1,23 @@
 <div class="author-info">
-<% unless message.parent %>
   <div class="actions">
-    <button class="btn reply-to" data-trunc="<%= strip_and_truncate(message.body) %>...">
-      <i class="icon-envelope" ></i>
+    <button class="btn like" data-action="<%= url("/#{params[:subdomain]}/#{message.id}") %>">
+      <i class="icon-heart" ></i>
+      <span><%= message.likes %></span>
     </button>
 
-    <button class="btn toggle-children" data-id="<%= message.id %>">
+<% unless message.parent %>
+    <button class="btn reply-to" data-id="<%= message.id %>" data-trunc="<%= strip_and_truncate(message.body) %>...">
+      <i class="icon-envelope"></i>
+    </button>
+
+    <button class="btn toggle-children">
       <i class="icon-list" ></i>
       <span><%= message.children.size %></span>
     </button>
-  </div>
 <% end %>
+  </div>
 
-  <span class="<% "author" unless message.parent %>">
+  <span class="author">
     <strong><%= message.person.name %></strong>
     <%= message.created_at.strftime("at %r on %D") %>
   </span>

@@ -1,4 +1,5 @@
 require "data_mapper"
+require "dm-adjust"
 require "dm-timestamps"
 
 def database_uri
