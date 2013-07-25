@@ -126,7 +126,6 @@ class App < Sinatra::Base
       [400, {}, params[:error] || "Invalid CSRF"]
     else
       begin
-        puts client.inspect
         token = client.auth_code.get_token(params[:code], redirect_uri: settings.redirect_uri).token
         create_or_update_person_from_token!(token)
         session[:success] = "Welcome #{person.name}!"
