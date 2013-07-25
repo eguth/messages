@@ -36,6 +36,7 @@
 
 textarea {
   background-color: #F0F0F0;
+  border-color: #434343;
 }
 
 textarea:focus {
@@ -70,7 +71,7 @@ textarea:focus {
 
   border-style: solid;
   border-width: 1px;
-  border-color: #78a300;
+  border-color: #434343;
   padding: 5px;
 
   -webkit-border-radius: 3px;
