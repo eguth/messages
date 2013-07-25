@@ -1,18 +1,19 @@
-body {
-  background-color: #78a300;
+.message-body {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #78a300;
 }
 
 .message {
   border-style: solid;
-  border-width: 3px;
-  border-color: black;
+  border-width: 1px;
+  border-color: #78a300;
   padding: 5px;
 
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
 
-  // background-color: #8aaf19;
   background-color: #F0F0F0;
 
   margin-bottom: 5px;
@@ -21,7 +22,7 @@ body {
 .message-child {
   border-left-style: solid;
   border-width: 1px;
-  border-color: black;
+  border-color: #78a300;
 
   padding-left: 10px;
   padding-bottom: 5px;
@@ -37,7 +38,14 @@ textarea {
   background-color: #F0F0F0;
 }
 
+textarea:focus {
+  border-color: #78a300;
+  box-shadow: 0 0 5px #78a300;
+}
+
 .author-info {
+  background-color: #dcdcdc;
+  padding: 5px;
   height: 30px;
   margin-bottom: 10px;
 }
@@ -45,6 +53,12 @@ textarea {
 .author-info .author {
   line-height: 30px;
   margin: auto 0 auto 0;
+}
+
+.author-info .time-info {
+  float: right;
+  padding-top: 5px;
+  font-size: 10px;
 }
 
 .author-info .actions {
@@ -55,8 +69,8 @@ textarea {
   background-color: #F0F0F0;
 
   border-style: solid;
-  border-width: 3px;
-  border-color: black;
+  border-width: 1px;
+  border-color: #78a300;
   padding: 5px;
 
   -webkit-border-radius: 3px;
@@ -98,14 +112,20 @@ textarea {
 
 #preview-area {
   background-color: #F0F0F0;
-  padding: 5px;
 
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
 
   margin-bottom: 10px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: #434343;
 }
+
+#preview-area div { padding: 10px; }
+#preview-area button { padding-right: 5px; }
 
 #replying {
   float: right;

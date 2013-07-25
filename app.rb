@@ -17,7 +17,7 @@ class App < Sinatra::Base
 
   configure :development do
     set :redirect_uri, "http://0.0.0.0:9292/oauth/authorize"
-    set :zendesk_uri, "http://%{subdomain}.localhost:3001"
+    set :zendesk_uri, "http://%{subdomain}.localhost:3000"
   end
 
   configure :test, :production do
@@ -126,6 +126,7 @@ class App < Sinatra::Base
       [400, {}, params[:error] || "Invalid CSRF"]
     else
       begin
+        puts client.inspect
         token = client.auth_code.get_token(params[:code], redirect_uri: settings.redirect_uri).token
         create_or_update_person_from_token!(token)
         session[:success] = "Welcome #{person.name}!"
