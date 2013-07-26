@@ -1,10 +1,12 @@
 source "https://rubygems.org"
 
+gem "rake"
 gem "sinatra"
 gem "puma"
 gem "json"
 gem "redcarpet"
 gem "nokogiri"
+gem "gemoji"
 
 gem "rack-ssl"
 gem "rack_csrf"

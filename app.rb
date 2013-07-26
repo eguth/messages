@@ -51,7 +51,7 @@ class App < Sinatra::Base
     parent = params[:parent_id].to_i
 
     message = Message.create(
-      body: markdown.render(params[:body]),
+      body: render_text(params[:body]),
       account: account,
       person_id: session[:user_id],
       parent_id: parent > 0 ? parent : nil
@@ -100,7 +100,7 @@ class App < Sinatra::Base
     return 401 unless logged_in?
 
     status 200
-    body markdown.render(params[:body])
+    body render_text(params[:body])
   end
 
   get "/:subdomain/login" do

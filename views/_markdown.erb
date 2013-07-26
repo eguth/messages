@@ -9,19 +9,24 @@
   <div class="content hide">
     <% markdown_examples.each do |example| %>
       <div>
-        <%= markdown.render(example) %>
+        <%= render_text(example) %>
         <p><%= example.gsub(/( )+$/, "[space]" * '\1'.length).gsub(/>/, "&gt;").gsub(/(\n)+/, "<br />") %></p>
       </div>
     <% end %>
 
     <div>
-      <div><%= markdown.render("Hello\n\nNew Paragraph") %></div>
+      <div><%= render_text("Hello\n\nNew Paragraph") %></div>
       <p>Hello<br /><br />New Paragraph</p>
     </div>
 
     <div style="height: 100px">
-      <div><%= markdown.render("Hello\n* * *\nNew Paragraph") %></div>
+      <div><%= render_text("Hello\n* * *\nNew Paragraph") %></div>
       <p>Hello<br />* * *<br />New Paragraph</p>
+    </div>
+
+    <div>
+      <div><%= render_text(":poop:") %></div>
+      <p>:poop: (<a href="http://www.emoji-cheat-sheet.com/">Emoji Cheatsheet</a>)</p>
     </div>
   </div>
 </div>
