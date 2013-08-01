@@ -1,7 +1,28 @@
+body {
+  background: url('images/master-bg2.png');
+}
+
+#sidebar,
+#messages {
+  background: #FFF;
+  padding: 16px;
+}
+
+#messages {
+  padding-top: 1px;
+}
+
+#message {
+  margin-bottom: 20px;
+}
+
+.submit-buttons {
+  margin-top: 20px;
+}
+
 .message-body {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: #78a300;
+  border-bottom: 1px dotted #DDD;
+  margin-left: 10px;
 }
 
 .icon-heart {
@@ -9,18 +30,13 @@
 }
 
 .message {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #78a300;
-  padding: 5px;
+  border-top: 1px dotted #DDD;
+  margin-bottom: 10px;
+  padding-top: 20px;
+}
 
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-
-  background-color: #F0F0F0;
-
-  margin-bottom: 5px;
+.message:first-child {
+  border-top: none;
 }
 
 .message-child {
@@ -38,48 +54,66 @@
   margin-top: 10px;
 }
 
-textarea {
-  background-color: #F0F0F0;
-  border-color: #434343;
+.gravatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
 }
 
-textarea:focus {
-  border-color: #78a300;
-  box-shadow: 0 0 5px #78a300;
+textarea {
+  background-color: #FFF;
+  border: 1px solid #d3d3d3;
+  background-image: linear-gradient(#fafafa,#ffffff);
+  border-radius: 3px;
+  color: #555;
+  width: 100%;
 }
 
 .author-info {
-  background-color: #dcdcdc;
+  background-color: #f8f8f8;
   padding: 5px;
-  height: 30px;
   margin-bottom: 10px;
+  margin-left: 10px;
+  font-size: 12px;
 }
 
 .author-info .author {
   line-height: 30px;
   margin: auto 0 auto 0;
+  color: #777;
 }
 
 .author-info .time-info {
-  float: right;
-  padding-top: 5px;
-  font-size: 10px;
+  padding-right: 10px;
 }
 
 .author-info .actions {
   float: right;
 }
 
+.actions .btn,
+.info-box .btn {
+  font-size: 11px;
+  border: 1px solid #ddd;
+  background: #f7f7f7;
+  color: #333;
+  font-weight: normal;
+}
+
+.actions .btn:hover,
+.info-box .btn:hover {
+  border: 1px solid #555;
+  background: #555;
+  color: #FFF;
+}
+
+
 .info-box {
-  background-color: #F0F0F0;
-
-  border-style: solid;
-  border-width: 1px;
-  border-color: #434343;
+  background-color: #FFF;
+  border: 1px solid #d3d3d3;
+  background-image: linear-gradient(#fafafa,#ffffff);
+  color: #555;
   padding: 5px;
-
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   border-radius: 3px;
 }
 

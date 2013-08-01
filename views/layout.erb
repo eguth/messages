@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Zendesk Wall</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -10,14 +11,15 @@
     <script src="/faye.client.js" type="text/javascript"></script>
     <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/vendor/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/bootstrap-overrides.css">
     <link rel="stylesheet" href="/application.css">
   </head>
 
   <body style="padding-top: 15px;">
-    <div class="container-fluid">
+    <div class="container">
       <%= alert %>
 
-      <div class="row-fluid">
+      <div>
         <%= yield %>
       </div>
     </div>

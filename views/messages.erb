@@ -9,13 +9,13 @@
   <a href="<%= url("/#{params[:subdomain]}/logout") %>">Logout</a>
 </div -->
 
-<div class="span4" id="sidebar">
+<div class="col-4" id="sidebar">
   <%= erb :_form %>
   <%= erb :_most_liked %>
   <%= erb :_markdown %>
 </div>
 
-<div class="span7">
+<div class="col-7">
   <div id="messages">
     <% messages.each do |message| %>
       <%= erb :_message, :locals => { :message => message } %>

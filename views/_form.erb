@@ -12,6 +12,8 @@
     <span></span>
   </div>
 
-  <button type="submit" class="btn">Submit</button>
-  <button class="btn btn-inverse" id="preview" data-action="<%= url("/#{params[:subdomain]}/preview") %>">Preview</button>
+  <div class="submit-buttons">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button class="btn btn-default" id="preview" data-action="<%= url("/#{params[:subdomain]}/preview") %>">Preview</button>
+  </div>
 </form>
