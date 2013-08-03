@@ -1,32 +1,33 @@
-<div id="markdown-reference" class="info-box">
-  <button class="btn toggle" data-toggle="#markdown-reference .content">
-    <i class="icon-plus"></i>
-    <i class="icon-minus" style="display: none;"></i>
-  </button>
-
+<div id="markdown-reference">
   <h4 class="pagination-centered">Markdown Reference</h4>
+  <div class="info-box clearfix">
+    <button class="btn toggle" data-toggle="#markdown-reference .content">
+      <i class="icon-plus"></i>
+      <i class="icon-minus" style="display: none;"></i>
+    </button>
 
-  <div class="content hide">
-    <% markdown_examples.each do |example| %>
+    <div class="content hide">
+      <% markdown_examples.each do |example| %>
+        <div>
+          <%= render_text(example) %>
+          <p><%= example.gsub(/( )+$/, "[space]" * '\1'.length).gsub(/>/, "&gt;").gsub(/(\n)+/, "<br />") %></p>
+        </div>
+      <% end %>
+
       <div>
-        <%= render_text(example) %>
-        <p><%= example.gsub(/( )+$/, "[space]" * '\1'.length).gsub(/>/, "&gt;").gsub(/(\n)+/, "<br />") %></p>
+        <div><%= render_text("Hello\n\nNew Paragraph") %></div>
+        <p>Hello<br /><br />New Paragraph</p>
       </div>
-    <% end %>
 
-    <div>
-      <div><%= render_text("Hello\n\nNew Paragraph") %></div>
-      <p>Hello<br /><br />New Paragraph</p>
-    </div>
+      <div style="height: 100px">
+        <div><%= render_text("Hello\n* * *\nNew Paragraph") %></div>
+        <p>Hello<br />* * *<br />New Paragraph</p>
+      </div>
 
-    <div style="height: 100px">
-      <div><%= render_text("Hello\n* * *\nNew Paragraph") %></div>
-      <p>Hello<br />* * *<br />New Paragraph</p>
-    </div>
-
-    <div>
-      <div><%= render_text(":poop:") %></div>
-      <p>:poop: (<a href="http://www.emoji-cheat-sheet.com/">Emoji Cheatsheet</a>)</p>
+      <div>
+        <div><%= render_text(":poop:") %></div>
+        <p>:poop: (<a href="http://www.emoji-cheat-sheet.com/">Emoji Cheatsheet</a>)</p>
+      </div>
     </div>
   </div>
 </div>

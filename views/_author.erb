@@ -1,11 +1,11 @@
-<div class="author-info">
+<div class="author-info clearfix">
   <div class="actions">
     <button class="btn like" title="Like this message" data-action="<%= url("/#{params[:subdomain]}/#{message.id}") %>">
       <i class="icon-heart" ></i>
       <span><%= message.likes %></span>
     </button>
 
-<% unless message.parent %>
+    <% unless message.parent %>
     <button class="btn reply-to" title="Reply to this message" data-id="<%= message.id %>" data-trunc="<%= strip_and_truncate(message.body) %>...">
       <i class="icon-envelope"></i>
     </button>
@@ -14,12 +14,11 @@
       <i class="icon-list" ></i>
       <span><%= message.children.size %></span>
     </button>
-<% end %>
+    <% end %>
   </div>
 
   <p class="author">
-    <strong><%= message.person.name %></strong>
+    <span class="time-info"><%= message.created_at.strftime("%b %d, %Y %H:%M") %></span>
+    <%= message.person.name %>
   </p>
-
-  <span class="time-info"><%= message.created_at.strftime("%r on %D") %></span>
 </div>
