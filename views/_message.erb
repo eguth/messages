@@ -7,7 +7,7 @@
 
     <%= erb :_author, :locals => { :message => message }, :layout => false %>
 
-    <div class="children hide">
+    <div class="children" style="display: none;">
       <% message.children.each do |child| %>
         <%= erb :_child, :locals => { :message => child }, :layout => false %>
       <% end %>
