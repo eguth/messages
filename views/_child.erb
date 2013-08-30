@@ -1,9 +1,9 @@
 <div class="row-fluid message-child">
-  <div class="span1">
+  <div class="col-1">
     <img src="<%= message.person.gravatar %>" style="width: 48px; height: 48px;" />
   </div>
 
-  <div class="span11">
+  <div class="col-11">
     <div class="message-body"><%= message.body %></div>
 
     <%= erb :_author, :locals => { :message => message }, :layout => false %>

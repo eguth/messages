@@ -1,8 +1,8 @@
 <script type="text/javascript">
-  var Settings = {
-    current_channel: '<%= current_channel %>',
-    max_messages: <%= settings.max_messages - 1 %>
-  };
+var Settings = {
+  current_channel: '<%= current_channel %>',
+  max_messages: <%= settings.max_messages - 1 %>
+};
 </script>
 
 <!-- div id="logout">
@@ -11,14 +11,26 @@
 
 <div class="col-4" id="sidebar">
   <%= erb :_form %>
-  <%= erb :_most_liked %>
   <%= erb :_markdown %>
 </div>
 
 <div class="col-8">
+  <ul class="nav nav-tabs">
+    <li><a href="#recent" data-toggle="tab">Recent</a></li>
+    <li><a href="#popular" data-toggle="tab">Popular</a></li>
+  </ul>
   <div id="messages">
-    <% messages.each do |message| %>
-      <%= erb :_message, :locals => { :message => message } %>
-    <% end %>
-  </div>
+    <div class="tab-content">
+      <div class="tab-pane active" id="recent">
+       <% messages.each do |message| %>
+       <%= erb :_message, :locals => { :message => message } %>
+       <% end %>
+     </div>
+     <div class="tab-pane" id="popular">
+       <% most_liked.each do |message| %>
+       <%= erb :_message, :locals => { :message => message } %>
+       <% end %>
+     </div>
+   </div>
+ </div>
 </div>

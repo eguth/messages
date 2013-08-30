@@ -17,7 +17,7 @@ class App < Sinatra::Base
 
   configure :development do
     set :redirect_uri, "http://0.0.0.0:9292/oauth/authorize"
-    set :zendesk_uri, "http://%{subdomain}.localhost:3000"
+    set :zendesk_uri, "http://%{subdomain}.localhost:3001"
   end
 
   configure :test, :production do

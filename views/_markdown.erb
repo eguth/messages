@@ -1,32 +1,39 @@
 <div id="markdown-reference">
-  <h4 class="pagination-centered">Markdown Reference</h4>
-  <div class="info-box clearfix">
-    <button class="btn toggle" data-toggle="#markdown-reference .content">
-      <i class="icon-plus"></i>
-      <i class="icon-minus" style="display: none;"></i>
-    </button>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+            Markdown Reference
+          </a>
+        </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="content">
+            <% markdown_examples.each do |example| %>
+            <div>
+              <%= render_text(example) %>
+              <p><%= example.gsub(/( )+$/, "[space]" * '\1'.length).gsub(/>/, "&gt;").gsub(/(\n)+/, "<br />") %></p>
+            </div>
+            <% end %>
 
-    <div class="content" style="display: none;">
-      <% markdown_examples.each do |example| %>
-        <div>
-          <%= render_text(example) %>
-          <p><%= example.gsub(/( )+$/, "[space]" * '\1'.length).gsub(/>/, "&gt;").gsub(/(\n)+/, "<br />") %></p>
+            <div>
+              <div><%= render_text("Hello\n\nNew Paragraph") %></div>
+              <p>Hello<br /><br />New Paragraph</p>
+            </div>
+
+            <div style="height: 100px">
+              <div><%= render_text("Hello\n* * *\nNew Paragraph") %></div>
+              <p>Hello<br />* * *<br />New Paragraph</p>
+            </div>
+
+            <div>
+              <div><%= render_text(":poop:") %></div>
+              <p>:poop: (<a href="http://www.emoji-cheat-sheet.com/">Emoji Cheatsheet</a>)</p>
+            </div>
+          </div>
         </div>
-      <% end %>
-
-      <div>
-        <div><%= render_text("Hello\n\nNew Paragraph") %></div>
-        <p>Hello<br /><br />New Paragraph</p>
-      </div>
-
-      <div style="height: 100px">
-        <div><%= render_text("Hello\n* * *\nNew Paragraph") %></div>
-        <p>Hello<br />* * *<br />New Paragraph</p>
-      </div>
-
-      <div>
-        <div><%= render_text(":poop:") %></div>
-        <p>:poop: (<a href="http://www.emoji-cheat-sheet.com/">Emoji Cheatsheet</a>)</p>
       </div>
     </div>
   </div>
