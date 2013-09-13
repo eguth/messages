@@ -1,16 +1,24 @@
-<div class="row message" id="message-<%= message.id %>">
-  <div class="col-1">
-    <img src="<%= message.person.gravatar %>" class="gravatar" />
-  </div>
-  <div class="col-11">
-    <div class="message-body"><%= message.body %></div>
+<div class="message" id="message-<%= message.id %>">
 
-    <%= erb :_author, :locals => { :message => message }, :layout => false %>
-
-    <div class="children" style="display: none;">
-      <% message.children.each do |child| %>
-        <%= erb :_child, :locals => { :message => child }, :layout => false %>
-      <% end %>
+  <div class="row">
+    <div class="col-1">
+      <img src="<%= message.person.gravatar %>" class="gravatar" />
+    </div>
+    <div class="col-11">
+      <%= erb :_author, :locals => { :message => message }, :layout => false %>
     </div>
   </div>
+
+  <div class="row message-body"><%= message.body %></div>
+
+  <div class="row">
+    <%= erb :_actions, :locals => { :message => message }, :layout => false %>
+  </div>
+
+  <div class="children" style="display: none;">
+    <% message.children.each do |child| %>
+    <%= erb :_child, :locals => { :message => child }, :layout => false %>
+    <% end %>
+  </div>
+
 </div>

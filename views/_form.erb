@@ -1,5 +1,5 @@
 <form action="<%= url("/#{params[:subdomain]}/message") %>" id="message" method="post">
-  <textarea rows="8" placeholder="Enter your message using markdown..." name="body" class="input-block-level"></textarea>
+  <textarea rows="4" placeholder="Enter your message using markdown..." name="body" class="input-block-level"></textarea>
   <input type="hidden" name="parent_id" id="parent-id" />
 
   <div id="preview-area" style="display: none;">
@@ -7,15 +7,9 @@
     <div></div>
   </div>
 
-  <div id="replying" class="alert" style="display: none;">
-    <button title="Post a top-level message" type="button" class="close">&times;</button>
-    <span></span>
-  </div>
-
   <div class="submit-buttons">
     <button type="submit" class="btn btn-primary">Submit</button>
     <button class="btn btn-default" id="preview" data-action="<%= url("/#{params[:subdomain]}/preview") %>">Preview</button>
   </div>
 </form>
-
 

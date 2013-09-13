@@ -1,11 +1,20 @@
-<div class="row-fluid message-child">
-  <div class="col-1">
-    <img src="<%= message.person.gravatar %>" style="width: 48px; height: 48px;" />
+<div class="message-child">
+  <div class="fluid-row">
+    <div class="col-1">
+      <img src="<%= message.person.gravatar %>" style="width: 40px; height: 40px;" class="img-rounded"/>
+    </div>
+    <div class="message-body col-10 author-info"><span class="author-name"><%= message.person.name %></span><%= message.body %></div>
   </div>
 
-  <div class="col-11">
-    <div class="message-body"><%= message.body %></div>
-
-    <%= erb :_author, :locals => { :message => message }, :layout => false %>
+  <div class="fluid-row">
+    <div class="col-10 author">
+      <span class="time-stamp"><%= message.created_at.strftime("%b %d, %Y %H:%M") %></span>
+    </div>
+    <div class="col-1">
+      <%= erb :_actions, :locals => { :message => message }, :layout => false %>
+    </div>
   </div>
+
 </div>
+
+

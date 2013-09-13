@@ -11,18 +11,29 @@ $(document).ready(function() {
 
   $("body").on('click', '.toggle-children', function(event) {
     event.preventDefault();
-
     $(this).parents(".message").find(".children").toggle();
+  });
+
+  $("body").on('click', '.delete', function(event) {
+    //not working
+    var element = $(this);
+
+    $.ajax(element.data("action"), {
+      method: "PUT"
+    }).done(function(data, textStatus, xhr) {
+      element.children("span").html(data);
+    }).fail(function(xhr, text, error) {
+      console.log("help");
+    });
+
+    event.preventDefault();
+
   });
 
   $("body").on('click', '.reply-to', function(event) {
     event.preventDefault();
 
     parent_id.val($(this).data("id"));
-
-    replying.show()
-    replying.children("span").html('Replying to "' + $(this).data("trunc") + '"');
-    window.scrollTo(0, 0);
   });
 
   replying.children(".close").click(function(event) {

@@ -20,6 +20,9 @@ gem "dm-postgres-adapter", :group => :production
 gem "dm-sqlite-adapter", :group => :development
 gem "dm-timestamps"
 gem "dm-adjust"
+gem 'will_paginate', '~> 3.0.0'
+gem 'will_paginate-bootstrap'
+gem 'bootstrap-will_paginate'
 
 group :test do
   gem "database_cleaner"

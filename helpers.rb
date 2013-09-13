@@ -34,6 +34,11 @@ module Helpers
     ENV["CLIENT_SECRET"]
   end
 
+  def page
+    [params[:page].to_i - 1, 0].max
+  end
+
+
   def api_client(token)
     ZendeskAPI::Client.new do |config|
       config.url = (settings.zendesk_uri % { subdomain: account.subdomain }) + "/api/v2"
@@ -81,11 +86,11 @@ module Helpers
   end
 
   def messages
-    @messages ||= account.messages.all(limit: settings.max_messages, order: [:created_at.desc], parent_id: nil)
+    @messages ||= account.messages.paginate(:page => params[:popular] || 1, per_page: settings.max_messages, order: [:created_at.desc], parent_id: nil)
   end
 
   def most_liked
-    @most_liked ||= account.messages.all(limit: 5, order: [:likes.desc])
+    @most_liked ||= account.messages.paginate(:page => params[:popular] || 1, per_page: settings.max_messages, order: [:likes.desc])
   end
 
   def account

@@ -5,7 +5,7 @@ require "dm-timestamps"
 def database_uri
   ENV["DATABASE_URL"] || "sqlite3://#{File.dirname(__FILE__)}/local.db"
 end
-
+DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, database_uri)
 
 class Account
@@ -34,7 +34,7 @@ class Person
 
   def gravatar
     hash = Digest::MD5.hexdigest(email.to_s.downcase.strip)
-    "https://secure.gravatar.com/avatar/#{hash}.img"
+    "https://secure.gravatar.com/avatar/#{hash}.img?d=https://assets.zendesk.com/images/frame_user.png"
   end
 end
 

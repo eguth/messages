@@ -9,28 +9,38 @@ var Settings = {
   <a href="<%= url("/#{params[:subdomain]}/logout") %>">Logout</a>
 </div -->
 
-<div class="col-4" id="sidebar">
-  <%= erb :_form %>
-  <%= erb :_markdown %>
-</div>
 
-<div class="col-8">
+  <%= erb :_form %>
+  <div class="hide">
+    <%= erb :_markdown %>
+  </div>
+
   <ul class="nav nav-tabs">
-    <li><a href="#recent" data-toggle="tab">Recent</a></li>
+    <li class="active"><a href="#recent" data-toggle="tab">Recent</a></li>
     <li><a href="#popular" data-toggle="tab">Popular</a></li>
   </ul>
   <div id="messages">
     <div class="tab-content">
       <div class="tab-pane active" id="recent">
-       <% messages.each do |message| %>
-       <%= erb :_message, :locals => { :message => message } %>
-       <% end %>
+      <% messages.each do |message| %>
+        <%= erb :_message, :locals => { :message => message } %>
+      <% end %>
+
+      <div class="pagination-right">
+        <%= will_paginate messages, param_name: 'recent', renderer: BootstrapPagination::Sinatra %>
+      </div>
      </div>
+
+
+
+
      <div class="tab-pane" id="popular">
        <% most_liked.each do |message| %>
-       <%= erb :_message, :locals => { :message => message } %>
+          <%= erb :_message, :locals => { :message => message } %>
        <% end %>
+       <div class="pagination-right">
+       <%= will_paginate most_liked, param_name: 'popular', renderer: BootstrapPagination::Sinatra %>
+     </div>
      </div>
    </div>
  </div>
-</div>

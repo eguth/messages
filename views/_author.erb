@@ -1,48 +1,6 @@
-<div class="author-info clearfix">
-  <div class="actions">
-    <button class="btn like" title="Like this message" data-action="<%= url("/#{params[:subdomain]}/#{message.id}") %>">
-      <i class="icon-heart" ></i>
-      <span><%= message.likes %></span>
-    </button>
-
-    <% unless message.parent %>
-    <button class="btn reply-to" title="Reply to this message" data-id="<%= message.id %>" data-trunc="<%= strip_and_truncate(message.body) %>...">
-      <i class="icon-envelope"></i>
-    </button>
-
-      <button type="button" id="reply" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom" data-original-title="" title=""><i class="icon-envelope"></i>
-    </button>
-
-    <button class="btn toggle-children" title="Show the replies to this message">
-      <i class="icon-list" ></i>
-      <span><%= message.children.size %></span>
-    </button>
-
-    <!--<button type="button" class="btn" data-toggle="collapse" data-target="#demo">
-      <i class="icon-envelope"></i>
-    </button>
-
-    <div id="demo" class="collapse"><textarea rows="4" cols="50" placeholder="Email address" autofocus=""></textarea></div>-->
-    <% end %>
-  </div>
-
+<div class="author-info">
   <p class="author">
+    <span class="author-name"><%= message.person.name %></span>
     <span class="time-info"><%= message.created_at.strftime("%b %d, %Y %H:%M") %></span>
-    <%= message.person.name %>
   </p>
 </div>
-
-<div id="reply-content" class="hide">
-  <%= erb :_form %>
-</div>
-
-<script type="text/javascript">
-$(document).ready(function(){
-  $('#reply').popover({
-    html : true,
-    content: function() {
-      return $('#reply-content').html();
-    }
-  });
-});
-</script>

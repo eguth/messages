@@ -6,11 +6,15 @@ require "rack/csrf"
 require "cgi"
 require "redcarpet"
 require "json"
+require "will_paginate"
+require "will_paginate-bootstrap"
+require "will_paginate/data_mapper"
 
 require_relative "orm"
 require_relative "helpers"
 
 class App < Sinatra::Base
+
   set    :ssl, lambda { false }
   set    :max_messages, 10
   set    :protection, except: :frame_options
@@ -29,6 +33,7 @@ class App < Sinatra::Base
   enable :logging
 
   helpers Helpers
+  helpers WillPaginate::Sinatra::Helpers
 
   use Rack::SSL, exclude: proc { !ssl? }
   use Rack::Session::Cookie, expire_after: 60*60*24, secret: (ENV["MESSAGES_SESSION_SECRET"] || rand.to_s)
@@ -43,6 +48,12 @@ class App < Sinatra::Base
     else
       erb :login
     end
+  end
+
+  get "/:subdomain/delete/:id" do
+    id = params[:id].to_i
+    message = Message.get(id)
+    message.destroy
   end
 
   post "/:subdomain/message" do
